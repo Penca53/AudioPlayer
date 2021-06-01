@@ -1,5 +1,5 @@
 ## Electron + TypeScript + React
-Boilerplate for a project using Electron, React and Typescript
+Electron-React app which connects to a Twitch channel and plays audio clips whenever a new command is typed.
 
 ## Installation
 
@@ -23,7 +23,7 @@ npm run dev:react
 npm run dev:electron
 ```
 
-or
+or directly
 
 ```bash
 npm run dev
@@ -36,12 +36,6 @@ To generate a project package run `package`
 npm run package
 ```
 
-
-
-## Contributing
-
-Pull requests are always welcome 😃.
-
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
