@@ -14,5 +14,9 @@
     "outDir": "./dist",
     "strict": true ,
     "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
   }
 }

@@ -1,20 +1,32 @@
-export const audioPlayer = new Audio();
-const VOLUME = 0.25;
+import { Sound } from './components/SoundsContainer/soundsContainer'
 
-let lastTime = 0;
+export const audioPlayer = new Audio()
+const VOLUME = 0.25
 
-export const PlaySound = (filepath: string) => {
-  if (audioPlayer.src !== new URL(filepath).toString()) {
-    audioPlayer.src = filepath;
-    audioPlayer.volume = VOLUME;
+let lastTime = 0
+
+export const playSoundFromCommand = (sound: Sound) => {
+  if (
+    sound.lastPlayed === undefined ||
+    Date.now() - sound.lastPlayed >= sound.cooldown * 1000
+  ) {
+    playSound(sound)
+  }
+}
+
+export const playSound = (sound: Sound) => {
+  if (audioPlayer.src !== new URL(sound.filepath).toString()) {
+    audioPlayer.src = sound.filepath
+    audioPlayer.volume = VOLUME
+    sound.lastPlayed = Date.now()
   } else {
-    audioPlayer.currentTime = lastTime;
+    audioPlayer.currentTime = lastTime
   }
 
-  audioPlayer.play();
-};
+  audioPlayer.play()
+}
 
-export const StopSound = () => {
-  audioPlayer.pause();
-  lastTime = audioPlayer.currentTime;
-};
+export const stopSound = () => {
+  audioPlayer.pause()
+  lastTime = audioPlayer.currentTime
+}

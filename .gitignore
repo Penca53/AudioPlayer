@@ -2,4 +2,4 @@ node_modules
 dist
 packages
 save.json
-credentials.json
+channelName.json

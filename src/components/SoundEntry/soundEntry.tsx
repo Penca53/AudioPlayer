@@ -1,7 +1,7 @@
-import React from 'react';
-import { audioPlayer, PlaySound, StopSound } from '../../soundPlayer';
-import { Sound } from '../SoundsContainer/soundsContainer';
-import { PlayButton, DeleteButton, FileButton } from './styles';
+import React from 'react'
+import { audioPlayer, playSound, stopSound } from '../../soundPlayer'
+import { Sound } from '../SoundsContainer/soundsContainer'
+import { PlayButton, DeleteButton, FileButton } from './styles'
 
 interface SoundEntryProps {
   index: number;
@@ -16,103 +16,103 @@ const SoundEntry: React.FC<SoundEntryProps> = ({
   soundsList,
   setSoundsList,
   playingIndex,
-  setPlayingIndex,
+  setPlayingIndex
 }) => {
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newList = soundsList.map((item, i) => {
-      if (i === index) {
-        const updatedItem = {
-          ...item,
-          name: event.target.value,
-        };
-
-        return updatedItem;
-      }
-
-      return item;
-    });
-
-    setSoundsList(newList);
-  };
-
-  const handleFilepathChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      if (event.target.files[0].path) {
-        const newFilepath = event.target.files[0].path.toString();
-        const newList = soundsList.map((item, i) => {
-          if (i === index) {
-            const updatedItem = {
-              ...item,
-              filepath: newFilepath,
-            };
-
-            return updatedItem;
-          }
-
-          return item;
-        });
-
-        setSoundsList(newList);
-      }
-    }
-  };
-
   const handleCommandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newList = soundsList.map((item, i) => {
       if (i === index) {
         const updatedItem = {
           ...item,
-          command: event.target.value,
-        };
+          command: event.target.value
+        }
 
-        return updatedItem;
+        return updatedItem
       }
 
-      return item;
-    });
+      return item
+    })
 
-    setSoundsList(newList);
-  };
+    setSoundsList(newList)
+  }
+
+  const handleFilepathChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      if (event.target.files[0].path) {
+        const newFilepath = event.target.files[0].path.toString()
+        const newList = soundsList.map((item, i) => {
+          if (i === index) {
+            const updatedItem = {
+              ...item,
+              filepath: newFilepath
+            }
+
+            return updatedItem
+          }
+
+          return item
+        })
+
+        setSoundsList(newList)
+      }
+    }
+  }
+
+  const handleCooldownChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newList = soundsList.map((item, i) => {
+      if (i === index) {
+        const updatedItem = {
+          ...item,
+          cooldown: parseInt(event.target.value)
+        }
+
+        return updatedItem
+      }
+
+      return item
+    })
+
+    setSoundsList(newList)
+  }
 
   const handlePlaySound = () => {
     if (playingIndex !== index) {
-      PlaySound(soundsList[index].filepath);
-      setPlayingIndex(index);
+      playSound(soundsList[index])
+      setPlayingIndex(index)
     } else {
-      StopSound();
-      setPlayingIndex(-1);
+      stopSound()
+      setPlayingIndex(-1)
     }
-  };
+  }
 
   const handleRemoveSound = () => {
-    const newList = soundsList.filter((item, i) => i !== index);
+    const newList = soundsList.filter((item, i) => i !== index)
 
-    setSoundsList(newList);
-  };
+    setSoundsList(newList)
+  }
 
   const getTrimmedFilepath = (filepath: string, maxChars: number) => {
-    const filenameStart = filepath.lastIndexOf('\\') + 1;
-    const l = filepath.length - filenameStart;
+    const filenameStart = filepath.lastIndexOf('\\') + 1
+    const l = filepath.length - filenameStart
 
     if (l <= maxChars) {
-      const result = filepath.substr(filenameStart);
-      return result;
+      const result = filepath.substr(filenameStart)
+      return result
     } else {
-      const right = Math.floor((maxChars - 3) / 2);
-      const left = maxChars - 3 - right;
+      const right = Math.floor((maxChars - 3) / 2)
+      const left = maxChars - 3 - right
 
       const result =
         filepath.substr(filenameStart, left) +
         '...' +
-        filepath.substr(filepath.length - right);
-      return result;
+        filepath.substr(filepath.length - right)
+      return result
     }
-  };
+  }
 
   if (audioPlayer) {
     audioPlayer.onended = () => {
-      setPlayingIndex(-1);
-    };
+      setPlayingIndex(-1)
+    }
   }
 
   return (
@@ -121,7 +121,7 @@ const SoundEntry: React.FC<SoundEntryProps> = ({
         marginTop: '16px',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       }}
     >
       <PlayButton
@@ -134,10 +134,10 @@ const SoundEntry: React.FC<SoundEntryProps> = ({
 
       <input
         type="text"
-        value={soundsList[index].name}
-        placeholder="Enter sound name"
+        value={soundsList[index].command}
+        placeholder="Command name"
         style={{ padding: '8px', width: '24%', border: '0px' }}
-        onChange={handleNameChange}
+        onChange={handleCommandChange}
       ></input>
 
       <FileButton>
@@ -154,11 +154,12 @@ const SoundEntry: React.FC<SoundEntryProps> = ({
       </FileButton>
 
       <input
-        type="text"
-        value={soundsList[index].command}
-        placeholder="Enter command name"
+        type="number"
+        min="0"
+        value={soundsList[index].cooldown}
+        placeholder="Cooldown..."
         style={{ padding: '8px', width: '24%', border: '0px' }}
-        onChange={handleCommandChange}
+        onChange={handleCooldownChange}
       ></input>
 
       <DeleteButton
@@ -169,7 +170,7 @@ const SoundEntry: React.FC<SoundEntryProps> = ({
         className={'fa fa-close'}
       ></DeleteButton>
     </form>
-  );
-};
+  )
+}
 
-export default SoundEntry;
+export default SoundEntry

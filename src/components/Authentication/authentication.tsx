@@ -1,9 +1,7 @@
-import { shell } from 'electron';
-import React, { useState } from 'react';
-import { Button, InputText, Container, SuggestionLink } from './styles';
-import fs from 'fs';
-
-const tmi = require('tmi.js');
+import React, { useState } from 'react'
+import { Button, InputText, Container } from './styles'
+import fs from 'fs'
+import tmi from 'tmi.js'
 
 interface AuthenticationProps {
   client: any;
@@ -12,84 +10,54 @@ interface AuthenticationProps {
   setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Credentials {
-  channelName: string;
-  authToken: string;
-}
-
 const Authentication: React.FC<AuthenticationProps> = ({
   client,
   setClient,
   isConnected,
-  setIsConnected,
+  setIsConnected
 }) => {
-  const saveCredentials = () => {
-    const credentials: Credentials = {
-      channelName: channelName,
-      authToken: authToken,
-    };
-    const data = JSON.stringify(credentials);
-    fs.writeFileSync('credentials.json', data);
-  };
+  const saveChannelName = () => {
+    const data = JSON.stringify(channelName)
+    fs.writeFileSync('channelName.json', data)
+  }
 
-  const loadCredentials = (): Credentials => {
-    if (fs.existsSync('credentials.json')) {
-      const data = fs.readFileSync('credentials.json');
-      const credentials: Credentials = JSON.parse(data.toString());
+  const loadChannelName = (): string => {
+    if (fs.existsSync('channelName.json')) {
+      const data = fs.readFileSync('channelName.json')
+      const channelName: string = JSON.parse(data.toString())
 
-      return credentials;
-    } else {
-      return { channelName: '', authToken: '' };
+      return channelName
     }
-  };
 
-  const loadedCredentials = loadCredentials();
-  const [channelName, setChannelName] = useState(loadedCredentials.channelName);
-  const [authToken, setAuthToken] = useState(loadedCredentials.authToken);
+    return ''
+  }
+
+  const [channelName, setChannelName] = useState(loadChannelName())
 
   const handleChannelNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setChannelName(event.target.value);
-  };
-
-  const handleAuthTokenChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setAuthToken(event.target.value);
-  };
-
-  const openAuthTokenWindow = () => {
-    shell.openExternal('https://twitchapps.com/tmi/');
-  };
+    setChannelName(event.target.value)
+  }
 
   const handleConnectButton = () => {
-    connectTwitchBot(channelName, authToken, channelName);
-  };
+    connectTwitchBot(channelName)
+  }
 
-  const connectTwitchBot = (
-    username: string,
-    auth: string,
-    channel: string
-  ) => {
+  const connectTwitchBot = (channelName: string) => {
     const newClient = new tmi.Client({
-      options: { debug: true },
-      identity: {
-        username: username,
-        password: auth,
-      },
-      channels: [channel],
-    });
+      channels: [channelName]
+    })
 
-    newClient.connect();
+    newClient.connect()
 
     newClient.on('connected', (address: any, port: any) => {
-      setIsConnected(true);
-      saveCredentials();
-    });
+      setIsConnected(true)
+      saveChannelName()
+    })
 
-    setClient(newClient);
-  };
+    setClient(newClient)
+  }
 
   return (
     <Container>
@@ -110,33 +78,12 @@ const Authentication: React.FC<AuthenticationProps> = ({
           style={{ marginBottom: '32px' }}
         ></InputText>
 
-        <label
-          htmlFor="auth-token"
-          style={{ color: 'white', fontWeight: 'bold' }}
-        >
-          Auth Token
-        </label>
-        <InputText
-          type="password"
-          id="auth-token"
-          name="auth-token"
-          placeholder="Auth token..."
-          value={authToken}
-          onChange={handleAuthTokenChange}
-        ></InputText>
-
-        <div style={{ margin: '0px auto 48px auto', textAlign: 'center' }}>
-          <SuggestionLink href="#" onClick={openAuthTokenWindow}>
-            Don't know your auth token?
-          </SuggestionLink>
-        </div>
-
         <Button type="button" onClick={handleConnectButton}>
           Connect
         </Button>
       </form>
     </Container>
-  );
-};
+  )
+}
 
-export default Authentication;
+export default Authentication
