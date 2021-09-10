@@ -1,5 +1,6 @@
 {
   "name": "audio-player",
+  "displayName": "Audio Player",
   "version": "1.0.2",
   "description": "An app which plays audio clips whenever a command on twitch is typed.",
   "main": "./dist/main.js",
@@ -45,7 +46,7 @@
     "cz-conventional-changelog": "3.2.0",
     "electron": "^8.2.2",
     "electron-builder": "^22.7.0",
-    "electron-devtools-installer": "^3.1.0",
+    "electron-devtools-installer": "^3.1.1",
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
@@ -69,16 +70,16 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "chokidar": "3",
+    "chokidar": "^3.5.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.1.1",
     "tmi.js": "^1.8.3"
   },
   "build": {
-    "appId": "your.id",
+    "appId": "com.penca53.audio-player",
     "mac": {
-      "category": "public.app-category.video"
+      "category": "public.app-category.twitch"
     },
     "directories": {
       "output": "packages"

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import MessageEntry from '../MessageEntry/messageEntry';
 
 interface MessagesContainerProps {
   client: any;
+  messagesContainer: RefObject<HTMLDivElement>;
 }
 
 interface UserState {
@@ -25,6 +26,7 @@ export const MAX_MESSAGES_COUNT = 100;
 
 export const MessagesContainer: React.FC<MessagesContainerProps> = ({
   client,
+  messagesContainer,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
@@ -73,12 +75,13 @@ export const MessagesContainer: React.FC<MessagesContainerProps> = ({
     <div
       style={{
         width: '85vw',
-        flex: '1',
+        flex: '0.25',
         overflowY: 'scroll',
         borderRadius: 4,
         backgroundColor: '#333333',
       }}
       className="custom-scroll"
+      ref={messagesContainer}
     >
       {messages.map((msg, index) => (
         <MessageEntry key={index} message={msg} />

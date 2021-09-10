@@ -8,8 +8,6 @@ const mainElement = document.createElement('div');
 mainElement.setAttribute('id', 'root');
 document.body.appendChild(mainElement);
 
-const tmi = require('tmi.js');
-
 const App = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [client, setClient] = useState(null);

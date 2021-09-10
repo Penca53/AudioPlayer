@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { playSound, playSoundFromCommand } from '../../soundPlayer';
 import AddSoundButton from '../AddSoundButton/addSoundButton';
 import { Container } from '../Main/styles';
@@ -13,10 +13,14 @@ export interface Sound {
 }
 
 interface SoundsContainer {
+  soundsContainer: RefObject<HTMLDivElement>;
   client: any;
 }
 
-export const SoundsContainer: React.FC<SoundsContainer> = ({ client }) => {
+export const SoundsContainer: React.FC<SoundsContainer> = ({
+  soundsContainer,
+  client,
+}) => {
   const saveSoundsList = () => {
     const data = JSON.stringify(soundsList);
     fs.writeFileSync('save.json', data);
@@ -64,10 +68,11 @@ export const SoundsContainer: React.FC<SoundsContainer> = ({ client }) => {
     <div
       style={{
         width: '85vw',
-        flex: '2',
+        flex: '0.75',
         overflowY: 'scroll',
       }}
       className="custom-scroll"
+      ref={soundsContainer}
     >
       {soundsList.map((s, index) => (
         <SoundEntry

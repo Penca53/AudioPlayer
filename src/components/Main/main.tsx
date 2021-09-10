@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { createRef, useRef } from 'react';
 import MessagesContainer from '../MessagesContainer/messagesContainer';
+import Separator from '../Separator/separator';
 import SoundsContainer from '../SoundsContainer/soundsContainer';
 
 interface MainProps {
@@ -7,6 +8,9 @@ interface MainProps {
 }
 
 const Main: React.FC<MainProps> = ({ client }) => {
+  const soundsContainer = useRef<HTMLDivElement>(null);
+  const messagesContainer = useRef<HTMLDivElement>(null);
+
   return (
     <div
       style={{
@@ -18,17 +22,15 @@ const Main: React.FC<MainProps> = ({ client }) => {
         paddingBottom: 16,
       }}
     >
-      <SoundsContainer client={client} />
-      <hr
-        style={{
-          marginTop: 16,
-          marginBottom: 16,
-          width: '90%',
-          border: '2px solid #222',
-          borderRadius: 5,
-        }}
+      <SoundsContainer client={client} soundsContainer={soundsContainer} />
+      <Separator
+        soundsContainer={soundsContainer}
+        messagesContainer={messagesContainer}
       />
-      <MessagesContainer client={client} />
+      <MessagesContainer
+        client={client}
+        messagesContainer={messagesContainer}
+      />
     </div>
   );
 };
