@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Button, InputText, Container } from './styles'
-import fs from 'fs'
-import tmi from 'tmi.js'
+import React, { useState } from 'react';
+import { Button, InputText, Container } from './styles';
+import fs from 'fs';
+import tmi from 'tmi.js';
 
 interface AuthenticationProps {
   client: any;
@@ -14,54 +14,70 @@ const Authentication: React.FC<AuthenticationProps> = ({
   client,
   setClient,
   isConnected,
-  setIsConnected
+  setIsConnected,
 }) => {
   const saveChannelName = () => {
-    const data = JSON.stringify(channelName)
-    fs.writeFileSync('channelName.json', data)
-  }
+    const data = JSON.stringify(channelName);
+    fs.writeFileSync('channelName.json', data);
+  };
 
   const loadChannelName = (): string => {
     if (fs.existsSync('channelName.json')) {
-      const data = fs.readFileSync('channelName.json')
-      const channelName: string = JSON.parse(data.toString())
+      const data = fs.readFileSync('channelName.json');
+      const channelName: string = JSON.parse(data.toString());
 
-      return channelName
+      return channelName;
     }
 
-    return ''
-  }
+    return '';
+  };
 
-  const [channelName, setChannelName] = useState(loadChannelName())
+  const [channelName, setChannelName] = useState(loadChannelName());
 
   const handleChannelNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setChannelName(event.target.value)
-  }
+    setChannelName(event.target.value);
+  };
 
   const handleConnectButton = () => {
-    connectTwitchBot(channelName)
-  }
+    connectTwitchBot(channelName);
+  };
 
   const connectTwitchBot = (channelName: string) => {
     const newClient = new tmi.Client({
-      channels: [channelName]
-    })
+      channels: [channelName],
+    });
 
-    newClient.connect()
+    newClient.connect();
 
     newClient.on('connected', (address: any, port: any) => {
-      setIsConnected(true)
-      saveChannelName()
-    })
+      setIsConnected(true);
+      saveChannelName();
+    });
 
-    setClient(newClient)
-  }
+    setClient(newClient);
+  };
 
   return (
-    <Container>
-      <form>
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <form
+        style={{
+          width: '75%',
+          maxWidth: 600,
+          borderRadius: 5,
+          backgroundColor: '#222224',
+          padding: '32px 64px 32px 64px',
+        }}
+      >
         <label
           htmlFor="channel-name"
           style={{ color: 'white', fontWeight: 'bold' }}
@@ -82,8 +98,8 @@ const Authentication: React.FC<AuthenticationProps> = ({
           Connect
         </Button>
       </form>
-    </Container>
-  )
-}
+    </div>
+  );
+};
 
-export default Authentication
+export default Authentication;

@@ -1,6 +1,6 @@
 {
   "name": "audio-player",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "An app which plays audio clips whenever a command on twitch is typed.",
   "main": "./dist/main.js",
   "scripts": {

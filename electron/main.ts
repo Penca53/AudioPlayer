@@ -12,14 +12,12 @@ function createWindow() {
   //app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
   mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 700,
+    width: 1280,
+    height: 720,
     backgroundColor: '#191622',
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false,
     },
-    kiosk: true,
   });
 
   if (process.env.NODE_ENV === 'development') {

@@ -23,7 +23,7 @@ const App = () => {
 
       <GlobalStyle />
       {isConnected ? (
-        (console.log('Client ' + client), (<Main client={client} />))
+        <Main client={client} />
       ) : (
         <Authentication
           client={client}
