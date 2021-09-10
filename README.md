@@ -1,5 +1,5 @@
 ## Electron + TypeScript + React + Twitch Chat Bot
-Electron-React-TS app which connects to a Twitch channel and plays audio clips whenever a new command is typed.
+Electron-React-TS app which connects to a user defined Twitch channel and plays audio clips whenever a valid command is typed.
 
 ## Installation
 
