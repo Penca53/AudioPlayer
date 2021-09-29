@@ -1,9 +1,14 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react';
-import { playSound, playSoundFromCommand } from '../../soundPlayer';
+import {
+  loadData,
+  globalCooldown,
+  playSoundFromCommand,
+  saveData,
+  setGlobalCooldown,
+} from '../../soundPlayer';
 import AddSoundButton from '../AddSoundButton/addSoundButton';
 import { Container } from '../Main/styles';
 import SoundEntry from '../SoundEntry/soundEntry';
-import fs from 'fs';
 
 export interface Sound {
   filepath: string;
@@ -21,23 +26,12 @@ export const SoundsContainer: React.FC<SoundsContainer> = ({
   soundsContainer,
   client,
 }) => {
-  const saveSoundsList = () => {
-    const data = JSON.stringify(soundsList);
-    fs.writeFileSync('save.json', data);
-  };
+  const savedData = loadData();
 
-  const loadSoundsList = (): Sound[] => {
-    if (fs.existsSync('save.json')) {
-      const data = fs.readFileSync('save.json');
-      const list: Sound[] = JSON.parse(data.toString());
+  const [soundsList, setSoundsList] = useState<Sound[]>(loadData());
+  const [globalCooldownState, setGlobalCooldownState] =
+    useState(globalCooldown);
 
-      return list;
-    } else {
-      return [];
-    }
-  };
-
-  const [soundsList, setSoundsList] = useState<Sound[]>(loadSoundsList());
   const latestSoundsList = useRef(soundsList);
 
   const [playingIndex, setPlayingIndex] = useState(-1);
@@ -61,8 +55,15 @@ export const SoundsContainer: React.FC<SoundsContainer> = ({
 
   useEffect(() => {
     latestSoundsList.current = soundsList;
-    saveSoundsList();
-  }, [soundsList]);
+    setGlobalCooldown(globalCooldownState);
+    saveData(soundsList);
+  }, [globalCooldownState, soundsList]);
+
+  const handleGlobalCooldownChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setGlobalCooldownState(parseInt(event.target.value));
+  };
 
   return (
     <div
@@ -74,6 +75,27 @@ export const SoundsContainer: React.FC<SoundsContainer> = ({
       className="custom-scroll"
       ref={soundsContainer}
     >
+      <form
+        style={{
+          marginTop: '16px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <label htmlFor="global-cooldown" style={{ fontWeight: 'bold' }}>
+          Global cooldown:
+        </label>
+        <input
+          type="number"
+          min="0"
+          value={globalCooldownState}
+          onChange={handleGlobalCooldownChange}
+          id="global-cooldown"
+          style={{ maxWidth: '64px', textAlign: 'right' }}
+        ></input>
+      </form>
+
       {soundsList.map((s, index) => (
         <SoundEntry
           key={index}

@@ -32,6 +32,9 @@ export const FileButton = styled.label`
   transition-duration: 0.4s;
   width: 40%;
   padding: 8px 0px 8px 0px;
+  max-height: 32px;
+  word-wrap: break-word;
+  overflow: hidden;
 
   &:hover {
     background-color: #327535;
