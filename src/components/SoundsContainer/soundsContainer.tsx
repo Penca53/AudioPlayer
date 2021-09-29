@@ -83,7 +83,10 @@ export const SoundsContainer: React.FC<SoundsContainer> = ({
           alignItems: 'center',
         }}
       >
-        <label htmlFor="global-cooldown" style={{ fontWeight: 'bold' }}>
+        <label
+          htmlFor="global-cooldown"
+          style={{ fontWeight: 'bold', marginRight: '8px' }}
+        >
           Global cooldown:
         </label>
         <input
